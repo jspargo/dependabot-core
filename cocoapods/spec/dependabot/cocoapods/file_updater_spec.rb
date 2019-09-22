@@ -14,6 +14,61 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
     stub_request(:get, master_url).to_return(status: 304)
   end
 
+  before do
+    all_pods_body = fixture("cocoapods", "all_pods.txt")
+    all_pods_url = "https://cdn.cocoapods.org//all_pods.txt"
+    stub_request(:get, all_pods_url).
+      to_return(status: 200, body: all_pods_body)
+  end
+
+  before do
+    all_pods_versions_body = fixture("cocoapods", "all_pods_versions_d_a_2.txt")
+    all_pods_versions_url = "https://cdn.cocoapods.org/all_pods_versions_d_a_2.txt"
+    stub_request(:get, all_pods_versions_url).
+      to_return(status: 200, body: all_pods_versions_body)
+  end
+
+  before do
+    cocoapods_version_body = fixture("cocoapods", "CocoaPods-version.yml")
+    cocoapods_version_url = "https://cdn.cocoapods.org/CocoaPods-version.yml"
+    stub_request(:get, cocoapods_version_url).
+      to_return(status: 200, body: cocoapods_version_body)
+  end
+
+  before do
+    deprecated_podspec_body = fixture("cocoapods", "deprecated_podspecs.txt")
+    deprecated_podspec_url = "https://cdn.cocoapods.org/deprecated_podspecs.txt"
+    stub_request(:get, deprecated_podspec_url).
+      to_return(status: 200, body: deprecated_podspec_body)
+  end
+
+  before do
+    alamofire_podspec_body =
+      fixture("cocoapods", "podspecs", "Alamofire-4.5.0.podspec.json")
+    alamofire_podspec_url = "https://cdn.cocoapods.org/Specs/d/a/2/"\
+        "Alamofire/4.5.0/Alamofire.podspec.json"
+    stub_request(:get, alamofire_podspec_url).
+      to_return(status: 200, body: alamofire_podspec_body)
+  end
+
+  before do
+    alamofire_podspec_body =
+      fixture("cocoapods", "podspecs", "Alamofire-4.5.1.podspec.json")
+    alamofire_podspec_url = "https://cdn.cocoapods.org/Specs/d/a/2/"\
+      "Alamofire/4.5.1/Alamofire.podspec.json"
+    stub_request(:get, alamofire_podspec_url).
+      to_return(status: 200, body: alamofire_podspec_body)
+  end
+
+  before do
+    alamofire_podspec_body =
+      fixture("cocoapods", "podspecs", "Alamofire-4.6.0.podspec.json")
+    alamofire_podspec_url = "https://cdn.cocoapods.org/Specs/d/a/2/"\
+      "Alamofire/4.6.0/Alamofire.podspec.json"
+    stub_request(:get, alamofire_podspec_url).
+      to_return(status: 200, body: alamofire_podspec_body)
+  end
+
   let(:updater) do
     described_class.new(
       dependency_files: [podfile, lockfile],

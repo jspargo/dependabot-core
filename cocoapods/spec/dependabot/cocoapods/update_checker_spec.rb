@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "dependabot/dependency"
 require "dependabot/dependency_file"
 require "dependabot/cocoapods/update_checker"
+require "dependabot/cocoapods/version"
 require_common_spec "update_checkers/shared_examples_for_update_checkers"
 
 RSpec.describe Dependabot::CocoaPods::UpdateChecker do
@@ -69,8 +71,19 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   let(:podfile_content) do
     fixture("cocoapods", "podfiles", "version_specified")
   end
+
   let(:lockfile_content) do
     fixture("cocoapods", "lockfiles", "version_specified")
+  end
+
+  let(:cocoapods_all_pods) do
+    fixture("cocoapods", "all_pods.txt")
+  end
+
+  before do
+    all_pods_url = "https://cdn.cocoapods.org//all_pods.txt"
+    stub_request(:get, all_pods_url).
+      to_return(status: 200, body: cocoapods_all_pods)
   end
 
   describe "#latest_version" do

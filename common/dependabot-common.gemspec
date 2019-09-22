@@ -24,8 +24,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-codecommit", "~> 1.28"
   spec.add_dependency "aws-sdk-ecr", "~> 1.5"
   spec.add_dependency "bundler", ">= 1.16", "< 3.0.0"
-  spec.add_dependency "cocoapods", "~> 1.8.0.beta.2"
-  spec.add_dependency "cocoapods-core", "~> 1.8.0.beta.2"
+  spec.add_dependency "cocoapods", "~> 1.9.1"
+  spec.add_dependency "cocoapods-core", "~> 1.9.1"
   spec.add_dependency "commonmarker", ">= 0.20.1", "< 0.22.0"
   spec.add_dependency "docker_registry2", "~> 1.7", ">= 1.7.1"
   spec.add_dependency "excon", "~> 0.66"
@@ -44,7 +44,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-its", "~> 1.2"
   spec.add_development_dependency "rspec_junit_formatter", "~> 0.4"
   spec.add_development_dependency "rubocop", "~> 0.80.1"
-  spec.add_development_dependency "vcr", "5.0"
   spec.add_development_dependency "webmock", "~> 3.4"
 
   next unless File.exist?("../.gitignore")
