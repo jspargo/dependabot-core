@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "cocoapods"
+require "dependabot/update_checkers"
 require "dependabot/update_checkers/base"
 require "dependabot/shared_helpers"
 require "dependabot/errors"
