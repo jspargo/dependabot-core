@@ -32,3 +32,5 @@ module Dependabot
     end
   end
 end
+
+Dependabot::FileFetchers.register("cocoapods", Dependabot::CocoaPods::FileFetcher)

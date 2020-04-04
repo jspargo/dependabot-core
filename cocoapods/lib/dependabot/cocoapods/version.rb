@@ -21,3 +21,6 @@ module Dependabot
     end
   end
 end
+
+Dependabot::Utils.
+    register_version_class("cocoapods", Dependabot::CocoaPods::Version)

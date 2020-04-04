@@ -33,6 +33,7 @@
 # - submodules
 # - docker
 # - terraform
+# - cocoapods
 
 $LOAD_PATH << "./bundler/lib"
 $LOAD_PATH << "./cargo/lib"
@@ -69,6 +70,7 @@ require "dependabot/pull_request_creator"
 require "dependabot/bundler"
 require "dependabot/cargo"
 require "dependabot/composer"
+require "dependabot/cocoapods"
 require "dependabot/dep"
 require "dependabot/docker"
 require "dependabot/elm"

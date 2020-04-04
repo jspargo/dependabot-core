@@ -83,3 +83,5 @@ module Dependabot
     end
   end
 end
+
+Dependabot::FileParsers.register("cocoapods", Dependabot::CocoaPods::FileParser)
