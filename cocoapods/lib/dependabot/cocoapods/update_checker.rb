@@ -82,7 +82,7 @@ module Dependabot
               evaluated_podfile,
               parsed_lockfile,
               nil,
-              false,
+              true,
               {:pods => [dependency.name]}
             )
 
@@ -144,3 +144,6 @@ module Dependabot
     end
   end
 end
+
+Dependabot::UpdateCheckers.
+    register("cocoapods", Dependabot::CocoaPods::UpdateChecker)
