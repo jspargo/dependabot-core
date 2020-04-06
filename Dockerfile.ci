@@ -119,4 +119,10 @@ COPY omnibus/Gemfile \
      /home/dependabot/dependabot-core/omnibus/
 RUN cd omnibus && bundle install
 
+RUN mkdir -p /home/dependabot/dependabot-core/cocoapods
+COPY cocoapods/Gemfile \
+     cocoapods/dependabot-cocoapods.gemspec \
+     /home/dependabot/dependabot-core/cocoapods/
+RUN cd cocoapods && bundle install
+
 COPY --chown=dependabot . /home/dependabot/dependabot-core/
