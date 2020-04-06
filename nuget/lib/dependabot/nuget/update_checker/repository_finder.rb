@@ -41,7 +41,7 @@ module Dependabot
 
         def build_url_for_details(repo_details)
           response = get_repo_metadata(repo_details)
-          check_repo_reponse(response, repo_details)
+          check_repo_response(response, repo_details)
           return unless response.status == 200
 
           body = remove_wrapping_zero_width_chars(response.body)
@@ -109,7 +109,7 @@ module Dependabot
           }
         end
 
-        def check_repo_reponse(response, details)
+        def check_repo_response(response, details)
           return unless [401, 402, 403].include?(response.status)
           raise if details.fetch(:url) == DEFAULT_REPOSITORY_URL
 
@@ -147,7 +147,6 @@ module Dependabot
           config_files.flat_map { |file| repos_from_config_file(file) }
         end
 
-        # rubocop:disable Metrics/AbcSize
         def repos_from_config_file(config_file)
           doc = Nokogiri::XML(config_file.content)
           doc.remove_namespaces!
@@ -179,7 +178,6 @@ module Dependabot
 
           sources
         end
-        # rubocop:enable Metrics/AbcSize
 
         def default_repository_details
           {

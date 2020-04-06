@@ -62,8 +62,6 @@ module Dependabot
           ]
         end
 
-        # rubocop:disable Metrics/MethodLength
-        # rubocop:disable Metrics/BlockLength
         def compile_new_requirement_files
           SharedHelpers.in_a_temporary_directory do
             write_updated_dependency_files
@@ -106,8 +104,6 @@ module Dependabot
             end.compact
           end
         end
-        # rubocop:enable Metrics/MethodLength
-        # rubocop:enable Metrics/BlockLength
 
         def update_manifest_files
           dependency_files.map do |file|
@@ -178,9 +174,9 @@ module Dependabot
 
           raise relevant_error unless error_suggests_bad_python_version?(msg)
           raise relevant_error if user_specified_python_version
-          raise relevant_error if python_version == "2.7.16"
+          raise relevant_error if python_version == "2.7.17"
 
-          @python_version = "2.7.16"
+          @python_version = "2.7.17"
           retry
         ensure
           @python_version = nil

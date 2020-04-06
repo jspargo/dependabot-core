@@ -15,16 +15,19 @@ module Dependabot
       require_relative "pr_name_prefixer"
 
       attr_reader :source, :dependencies, :files, :credentials,
-                  :pr_message_footer, :commit_message_options,
-                  :vulnerabilities_fixed, :github_redirection_service
+                  :pr_message_header, :pr_message_footer,
+                  :commit_message_options, :vulnerabilities_fixed,
+                  :github_redirection_service
 
       def initialize(source:, dependencies:, files:, credentials:,
-                     pr_message_footer: nil, commit_message_options: {},
-                     vulnerabilities_fixed: {}, github_redirection_service: nil)
+                     pr_message_header: nil, pr_message_footer: nil,
+                     commit_message_options: {}, vulnerabilities_fixed: {},
+                     github_redirection_service: nil)
         @dependencies               = dependencies
         @files                      = files
         @source                     = source
         @credentials                = credentials
+        @pr_message_header          = pr_message_header
         @pr_message_footer          = pr_message_footer
         @commit_message_options     = commit_message_options
         @vulnerabilities_fixed      = vulnerabilities_fixed
@@ -40,7 +43,8 @@ module Dependabot
       end
 
       def pr_message
-        commit_message_intro + metadata_cascades + prefixed_pr_message_footer
+        suffixed_pr_message_header + commit_message_intro + \
+          metadata_cascades + prefixed_pr_message_footer
       end
 
       def commit_message
@@ -68,7 +72,6 @@ module Dependabot
           end
       end
 
-      # rubocop:disable Metrics/AbcSize
       def application_pr_name
         pr_name = "bump "
         pr_name = pr_name.capitalize if pr_name_prefixer.capitalize_first_word?
@@ -92,7 +95,6 @@ module Dependabot
             "#{names[0..-2].join(', ')} and #{names[-1]}"
           end
       end
-      # rubocop:enable Metrics/AbcSize
 
       def pr_name_prefix
         pr_name_prefixer.pr_name_prefix
@@ -118,6 +120,12 @@ module Dependabot
         return "" unless pr_message_footer
 
         "\n\n#{pr_message_footer}"
+      end
+
+      def suffixed_pr_message_header
+        return "" unless pr_message_header
+
+        "#{pr_message_header}\n\n"
       end
 
       def message_trailers
@@ -156,7 +164,6 @@ module Dependabot
         msg + "to permit the latest version."
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
       def version_commit_message_intro
         if dependencies.count > 1 && updating_a_property?
@@ -186,7 +193,7 @@ module Dependabot
 
         msg
       end
-      # rubocop:enable Metrics/CyclomaticComplexity
+
       # rubocop:enable Metrics/PerceivedComplexity
 
       def multidependency_property_intro
@@ -282,7 +289,7 @@ module Dependabot
         end
 
         dependencies.map do |dep|
-          msg = "\n\nUpdates `#{dep.display_name}` from "\
+          msg = "\nUpdates `#{dep.display_name}` from "\
                 "#{previous_version(dep)} to #{new_version(dep)}"
 
           if vulnerabilities_fixed[dep.name]&.one?
@@ -296,6 +303,8 @@ module Dependabot
       end
 
       def metadata_cascades_for_dep(dep)
+        break_tag = source_provider_supports_html? ? "\n<br />" : "\n\n"
+
         msg = ""
         msg += vulnerabilities_cascade(dep)
         msg += release_cascade(dep)
@@ -303,8 +312,8 @@ module Dependabot
         msg += upgrade_guide_cascade(dep)
         msg += commits_cascade(dep)
         msg += maintainer_changes_cascade(dep)
-        msg += "\n<br />" unless msg == ""
-        sanitize_links_and_mentions(msg)
+        msg += break_tag unless msg == ""
+        "\n" + sanitize_links_and_mentions(msg)
       end
 
       def vulnerabilities_cascade(dep)
@@ -425,13 +434,17 @@ module Dependabot
       def build_details_tag(summary:, body:)
         # Azure DevOps does not support <details> tag (https://developercommunity.visualstudio.com/content/problem/608769/add-support-for-in-markdown.html)
         # CodeCommit does not support the <details> tag (no url available)
-        if source.provider == ("azure" || "codecommit")
-          "\n\##{summary}\n\n#{body}"
-        else
-          msg = "\n<details>\n<summary>#{summary}</summary>\n\n"
+        if source_provider_supports_html?
+          msg = "<details>\n<summary>#{summary}</summary>\n\n"
           msg += body
-          msg + "</details>"
+          msg + "</details>\n"
+        else
+          "\n\##{summary}\n\n#{body}"
         end
+      end
+
+      def source_provider_supports_html?
+        !%w(azure codecommit).include?(source.provider)
       end
 
       def serialized_vulnerability_details(details)
@@ -652,6 +665,8 @@ module Dependabot
       end
 
       def sanitize_links_and_mentions(text)
+        return text unless source.provider == "github"
+
         LinkAndMentionSanitizer.
           new(github_redirection_service: github_redirection_service).
           sanitize_links_and_mentions(text: text)

@@ -47,6 +47,12 @@ RSpec.describe Dependabot::NpmAndYarn::FileParser do
     describe "top level dependencies" do
       subject(:top_level_dependencies) { dependencies.select(&:top_level?) }
 
+      context "with no lockfile" do
+        let(:package_json_fixture_name) { "exact_version_requirements.json" }
+        let(:files) { [package_json] }
+        its(:length) { is_expected.to eq(3) }
+      end
+
       context "with a package-lock.json" do
         let(:lockfile) do
           Dependabot::DependencyFile.new(
@@ -115,6 +121,12 @@ RSpec.describe Dependabot::NpmAndYarn::FileParser do
           let(:npm_lock_fixture_name) { "empty_version.json" }
 
           its(:length) { is_expected.to eq(2) }
+        end
+
+        context "that contains a version requirement string" do
+          let(:npm_lock_fixture_name) { "invalid_version_requirement.json" }
+          subject { dependencies.find { |d| d.name == "etag" } }
+          it { is_expected.to eq(nil) }
         end
 
         context "that has URL versions (i.e., is from a bad version of npm)" do

@@ -1,3 +1,286 @@
+## v0.117.5, 31 March 2020
+
+- Adds python 3.7.7 (@sobolevn)
+- Bump jest from 25.2.0 to 25.2.3 in /npm_and_yarn/helpers
+- Bump jest from 25.1.0 to 25.2.0 in /npm_and_yarn/helpers
+- Bump npm from 6.14.3 to 6.14.4 in /npm_and_yarn/helpers
+- Bump cython from 0.29.15 to 0.29.16 in /python/helpers
+
+## v0.117.4, 24 March 2020
+
+- Bump prettier from 1.19.1 to 2.0.2 in /npm_and_yarn/helpers
+- Bump phpstan/phpstan from 0.12.14 to 0.12.18 in /composer/helpers
+- Bump npm from 6.14.2 to 6.14.3 in /npm_and_yarn/helpers
+- Upgrade to PHP 7.4 (@kubawerlos)
+- python: upgrade to poetry ^1.0.0 (@tommilligan)
+- Update pyenv version (@ulgens)
+- Update Python version to 3.8.2 (@ulgens)
+- Bump acorn from 6.3.0 to 6.4.1 in /npm_and_yarn/helpers
+- Update gitlab requirement from = 4.13.1 to = 4.14.1 in /common
+
+## v0.117.3, 20 March 2020
+
+- Update Maven Requirement (@a1flecke)
+
+## v0.117.2, 9 March 2020
+
+- Improve PR descriptions for non-github PR's
+- Correctly mark requirements as not up to date
+
+## v0.117.1, 5 March 2020
+
+- Bump npm from 6.14.1 to 6.14.2 in /npm_and_yarn/helpers
+- Gradle: Add support for authenticated repositories (@GeorgiosGoniotakis)
+- Bump phpstan/phpstan from 0.12.12 to 0.12.14 in /composer/helpers
+
+## v0.117.0, 3 March 2020
+
+- Maven: Add support for "+" Semver Build Identifier
+- Sanitize github ref links in plaintext/rdoc
+- Codecommit: Ensures a commit is created before opening a PR
+- Hex: Fix mix.lock file parser for hex 0.20.2+
+- Bump rubocop requirement from ~> 0.79.0 to ~> 0.80.1 in /common
+- Bump phpstan/phpstan from 0.12.08 to 0.12.12 in /composer/helpers
+- Bump npm from 6.13.7 to 6.14.1 in /npm_and_yarn/helpers
+- Bump pip-tools from 4.4.1 to 4.5.1 in /python/helpers
+- Bump semver from 7.1.2 to 7.1.3 in /npm_and_yarn/helpers
+- Bump cython from 0.29.14 to 0.29.15 in /python/helpers
+- Bump rimraf from 3.0.1 to 3.0.2 in /npm_and_yarn/helpers
+- Bump composer/composer from 1.9.2 to 1.9.3 in /composer/helpers
+- Remove security_updates_only (unused)
+
+## v0.116.6, 3 February 2020
+
+- Better branch name sanitisation
+
+## v0.116.5, 31 January 2020
+
+- Bump semver from 7.1.1 to 7.1.2 in /npm_and_yarn/helpers
+- Add security updates only option to the update checker (unused)
+
+## v0.116.4, 29 January 2020
+
+- Bump npm from 6.13.6 to 6.13.7 in /npm_and_yarn/helpers
+- Bump rimraf from 3.0.0 to 3.0.1 in /npm_and_yarn/helpers
+- Bump phpstan/phpstan from 0.12.5 to 0.12.8 in /composer/helpers
+- Maven: Add Support for Semver Build Identifier "+"
+- Bump commonmarker requirement from ~> 0.20.1 to >= 0.20.1, < 0.22.0
+- Bump jest from 24.9.0 to 25.1.0 in /npm_and_yarn/helpers
+- Bump pip-tools from 4.3.0 to 4.4.0 in /python/helpers
+
+## v0.116.3, 20 January 2020
+
+- Git Dependencies: Respect HTTP scheme for service pack URLs
+- Maven: Support properties with attributes
+- Bump composer/composer from 1.9.1 to 1.9.2 in /composer/helpers
+- Bump phpstan/phpstan from 0.12.4 to 0.12.5 in /composer/helpers
+
+## v0.116.2, 10 January 2020
+
+- Go Modules: Stop trying to update indirect deps
+- Bump npm from 6.13.4 to 6.13.6 in /npm_and_yarn/helpers
+
+## v0.116.1, 8 January 2020
+
+- Hex: fix file fetching for nested umbrella apps
+
+## v0.116.0, 8 January 2020
+
+- Python: Fix latest version finder when the dependency name has extras
+- Go Modules: Fix version comparison in `SecurityAdvisory`
+- Bump default Python to 3.8.1 and add 3.7.6 to allowed versions
+- [Security] Bump handlebars from 4.1.2 to 4.5.3 in /npm_and_yarn/helpers
+- Bump rubocop requirement from ~> 0.78.0 to ~> 0.79.0 in /common
+- Bump phpstan/phpstan from 0.12.3 to 0.12.4 in /composer/helpers
+- Bump eslint from 6.7.2 to 6.8.0 in /npm_and_yarn/helpers
+
+## v0.115.3, 20 December 2019
+
+- Handle links with breaks in the link sanitizer
+
+## v0.115.2, 20 December 2019
+
+- Update gitlab requirement from = 4.12 to = 4.13.1 in /common
+- Refactor sanitize_mentions method to use commonmarker
+
+## v0.115.1, 19 December 2019
+
+- Python: Fix dep name extras bug in metadafinder
+- Update rubocop requirement from ~> 0.77.0 to ~> 0.78.0 in /common
+
+## v0.115.0, 18 December 2019
+
+- Bump semver from 7.1.0 to 7.1.1 in /npm_and_yarn/helpers
+- Refactor sanitize_links method
+  - HTML is now output in Dependabot::PullRequestCreator::MessageBuilder#pr_message.
+
+## v0.114.1, 17 December 2019
+
+- Bump semver from 7.0.0 to 7.1.0 in /npm_and_yarn/helpers
+
+## v0.114.0, 16 December 2019
+
+- GitLab: Pass all assignees to merge request creator
+- Bump phpstan/phpstan from 0.11.19 to 0.12.3 in /composer/helpers
+- Bump eslint-plugin-prettier from 3.1.1 to 3.1.2 in /npm_and_yarn/helpers
+- Bump semver from 6.3.0 to 7.0.0 in /npm_and_yarn/helpers
+
+## v0.113.28, 12 December 2019
+
+- Bump npm from 6.13.2 to 6.13.4 in /npm_and_yarn/helpers
+- Bump @dependabot/yarn-lib from 1.21.0 to 1.21.1 in /npm_and_yarn/helpers
+- Python: Preserve dependency name extras
+
+## v0.113.27, 9 December 2019
+
+- JS: Fix unfetchable tarball path deps ∞ loop
+- Codecommit: Create client without credentials
+- Bump npm from 6.13.1 to 6.13.2 in /npm_and_yarn/helpers
+- Bump @dependabot/yarn-lib from 1.19.2 to 1.21.0 in /npm_and_yarn/helpers
+- Bump eslint from 6.7.1 to 6.7.2 in /npm_and_yarn/helpers
+
+## v0.113.26, 29 November 2019
+
+- Cargo: Handle virtual manifests with workspace glob on src/*
+
+## v0.113.25, 28 November 2019
+
+- Bump default Python from 3.7.5 to 3.8.0
+- Update rubocop requirement from ~> 0.76.0 to ~> 0.77.0 in /common
+- Docker: support mixed case version suffixes (RC)
+- Support Jina templates in requirements files
+
+## v0.113.24, 26 November 2019
+
+- Bump friendsofphp/php-cs-fixer in /composer/helpers
+- Bump pip-tools from 4.2.0 to 4.3.0 in /python/helpers
+
+## v0.113.23, 25 November 2019
+
+- JS: Fetch tarball path dependencies
+- Bump eslint from 6.6.0 to 6.7.1 in /npm_and_yarn/helpers
+
+## v0.113.22, 22 November 2019
+
+- Bump @dependabot/yarn-lib from 1.19.1 to 1.19.2 in /npm_and_yarn/helpers
+- Add pull request message header support (thanks, @millerick!)
+- Go: Add go version specifier (thanks, @chenrui333!)
+- Go: Bump golang to v1.13.4 (thanks, @chenrui333!)
+- Docker: Support mix of Docker tags for the same image (thanks, @michael-booth!)
+- Maven: Change logic to check if a version is released
+
+## v0.113.21, 19 November 2019
+
+- Bump npm from 6.13.0 to 6.13.1 in /npm_and_yarn/helpers
+- Bump https-proxy-agent in /npm_and_yarn/helpers
+- Bump prettier from 1.18.2 to 1.19.1 in /npm_and_yarn/helpers
+- Fix Gitlab API commit file type to match GitHub's submodule type
+
+## v0.113.20, 6 November 2019
+
+- Decompress gzipped http responses
+- Bump npm from 6.12.1 to 6.13.0 in /npm_and_yarn/helpers
+- Bump pip from 19.2.3 to 19.3.1 in /python/helpers
+- Gradle: Skip name property if we already present
+
+## v0.113.19, 5 November 2019
+
+- Common: Fix hanging regex in LinkAndMentionSanitizer
+- Bump cython from 0.29.13 to 0.29.14 in /python/helpers
+- Bump composer/composer from 1.9.0 to 1.9.1 in /composer/helpers
+- Bump default Python versions to 3.7.5 and 2.7.17
+- Bump nock from 11.6.0 to 11.7.0 in /npm_and_yarn/helpers
+- GitLab: Don't pass empty array to update approvers
+
+## v0.113.18, 30 October 2019
+
+- Bump pip-tools from 4.1.0 to 4.2.0 in /python/helpers
+
+## v0.113.17, 30 October 2019
+
+- Bump npm from 6.10.3 to 6.12.1 in /npm_and_yarn/helpers
+- Update rubocop requirement from ~> 0.75.0 to ~> 0.76.0 in /common
+- Update toml-rb requirement from ~> 1.1, >= 1.1.2 to >= 1.1.2, < 3.0
+
+## v0.113.16, 28 October 2019
+
+- Fix mismatched code span issue when sanitizing mentions
+- Bump eslint from 6.5.1 to 6.6.0 in /npm_and_yarn/helpers
+- Bump nock from 11.5.0 to 11.6.0 in /npm_and_yarn/helpers
+- Bump phpstan/phpstan from 0.11.16 to 0.11.19 in /composer/helpers
+- Add support for VS Code Remote Development on Docker
+- Bump nock from 11.4.0 to 11.5.0 in /npm_and_yarn/helpers
+
+## v0.113.15, 18 October 2019
+
+- Add whatsnew to changelog names
+
+## v0.113.14, 17 October 2019
+
+- JS: Fix missing previous version when the version is a git sha
+
+## v0.113.13, 16 October 2019
+
+- JS: Fix bug where previous version was equal to the new version
+
+## v0.113.12, 9 October 2019
+
+- Gradle: Support updates that use git dependencies
+- Improve @mention sanitizer for verbatim backticks in code fences
+
+## v0.113.11, 8 October 2019
+
+- Disable the Go module proxy
+
+## v0.113.10, 7 October 2019
+
+- Upgrade Go to 1.13.1
+
+## v0.113.9, 3 October 2019
+
+- Improve @mention sanitizer for compact code blocks
+- JS: Handle GitHub shorthand links in MetadataFinder
+
+## v0.113.8, 2 October 2019
+
+- Python: Revert file fetching change
+
+## v0.113.7, 1 October 2019
+
+- Bump eslint from 6.5.0 to 6.5.1 in /npm_and_yarn/helpers
+- Bump rubocop requirement from ~> 0.74.0 to ~> 0.75.0 in /common
+- Bump @dependabot/yarn-lib from 1.17.3 to 1.19.0 in /npm_and_yarn/helpers
+
+## v0.113.6, 30 September 2019
+
+- Bundler: Fall back to unlocking all sub-dependencies in lockfile updater
+- Python: Fetch path dependency files relative to directory they're required in
+- Python: Handle nested path dependencies during parsing
+
+## v0.113.5, 30 September 2019
+
+- JS: Handle cases where the resolved previous version is the latest version
+
+## v0.113.4, 27 September 2019
+
+- JS: Resolve the previous version from the version requirements when there is
+  no lockfile
+- JS: Handle malformed lockfile versions
+
+## v0.113.3, 26 September 2019
+
+- Gradle: Support pre-release syntax 1.0.0pr
+- Update security vulnerability disclosure to GitHub Bug Bounty program
+
+## v0.113.2, 25 September 2019
+
+- Dependencies: Make gpgme an optional dependency
+- Dev env: Allow a few options to be provided to the dev shell
+- Dev env: Mount .rubocop.yml in the docker dev shell
+- Dry-run: Only git init when writing output
+- Dry run: support multiple package managers when caching files
+- Dry run: add --commit option to fetch from
+
 ## v0.113.1, 17 September 2019
 
 - Bump nock from 10.0.6 to 11.3.4 in /npm_and_yarn/helpers
@@ -111,7 +394,7 @@
 
 ## v0.112.16, 27 August 2019
 
-- Composer: Tigher regex for missing platform requirements
+- Composer: Tighter regex for missing platform requirements
 
 ## v0.112.15, 27 August 2019
 
@@ -456,7 +739,7 @@
 ## v0.111.7, 14 July 2019
 
 - Docker: Insist on updated docker_registry2 to fix Artifactory bug
-- Yarn: Enfore https for most common hostnames
+- Yarn: Enforce https for most common hostnames
 - Yarn: Bump @dependabot/yarn-lib from 1.16.0 to 1.17.3 in /npm_and_yarn/helpers
 
 ## v0.111.6, 13 July 2019
@@ -1002,7 +1285,7 @@
 
 - Add longer sleep when creating a commit fails
 - Python: Bump pip from 19.1 to 19.1.1 in /python/helpers
-- Raise error for unprocessible branch names
+- Raise error for unprocessable branch names
 
 ## v0.106.34, 6 May 2019
 
@@ -1128,7 +1411,7 @@
 ## v0.106.8, 24 April 2019
 
 - NPM: Handle private registry error '403 Fobidden'
-- JS: Handle git dependenices with file-path sub-dependencies
+- JS: Handle git dependencies with file-path sub-dependencies
 
 ## v0.106.7, 24 April 2019
 
@@ -1274,7 +1557,7 @@
 
 ## v0.102.1, 12 April 2019
 
-- JS: Don't assume we can upgrade sub-dependencies to a secure verison
+- JS: Don't assume we can upgrade sub-dependencies to a secure version
 
 ## v0.102.0, 12 April 2019
 
@@ -1465,7 +1748,7 @@
 
 - Ruby: Include protocol when raising PrivateSourceAuthenticationFailure errors
 - Elixir: Pass empty string token to elixir helper
-- JS: Better regsitry uniq-ing
+- JS: Better registry uniq-ing
 
 ## v0.98.50, 29 March 2019
 
@@ -1586,7 +1869,7 @@
 ## v0.98.24, 21 March 2019
 
 - Ruby: Update list of latest rubies
-- Python: Narmalise dependency names when looking for them in poetry lockfile
+- Python: Normalise dependency names when looking for them in poetry lockfile
 - Do two retries when attempting to fetch git metadata
 - Maven: Handle case where declaration_pom_name isn't found
 
@@ -1870,7 +2153,7 @@
 
 ## v0.95.64, 25 February 2019
 
-- JS: Return a version instance from UpdateChecker#latest_resolvable_version_with_no_unlock when version is numberic
+- JS: Return a version instance from UpdateChecker#latest_resolvable_version_with_no_unlock when version is numeric
 
 ## v0.95.63, 25 February 2019
 
@@ -2220,7 +2503,7 @@
 
 ## v0.94.2, 2 February 2019
 
-- Add class attribute_reader to Labler
+- Add class attribute_reader to Labeler
 - Ruby: Move bundler monkey patches
 - Python: Bump cython from 0.29.3 to 0.29.4 in /python/helpers
 
@@ -2357,7 +2640,7 @@
 
 ## v0.92.0, 21 January 2019
 
-- .NET, Elixir and Pythnon: Better handling of version with build/local part
+- .NET, Elixir and Python: Better handling of version with build/local part
 - JS: Simplify npm_and_yarn helpers to yarn workspaces
 - JS: Bump npm from 6.5.0 to 6.6.0 in /npm_and_yarn/helpers/npm
 - JS: Handle sub-dep version resolution errors

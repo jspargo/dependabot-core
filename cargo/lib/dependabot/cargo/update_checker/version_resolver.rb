@@ -7,8 +7,6 @@ require "dependabot/cargo/update_checker"
 require "dependabot/cargo/file_parser"
 require "dependabot/cargo/version"
 require "dependabot/errors"
-
-# rubocop:disable Metrics/ClassLength
 module Dependabot
   module Cargo
     class UpdateChecker
@@ -80,8 +78,6 @@ module Dependabot
           end
         end
 
-        # rubocop:disable Metrics/AbcSize
-        # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def better_specification_needed?(error)
           return false if @custom_specification
@@ -111,8 +107,7 @@ module Dependabot
           @custom_specification = spec_options.first
           true
         end
-        # rubocop:enable Metrics/AbcSize
-        # rubocop:enable Metrics/CyclomaticComplexity
+
         # rubocop:enable Metrics/PerceivedComplexity
 
         def dependency_spec
@@ -340,6 +335,8 @@ module Dependabot
             FileUtils.mkdir_p(dir)
             File.write(file.name, sanitized_manifest_content(file.content))
 
+            next if virtual_manifest?(file)
+
             FileUtils.mkdir_p(File.join(dir, "src"))
             File.write(File.join(dir, "src/lib.rs"), dummy_app_content)
             File.write(File.join(dir, "src/main.rs"), dummy_app_content)
@@ -415,6 +412,13 @@ module Dependabot
           ).git_dependency?
         end
 
+        # When the package table is not present in a workspace manifest, it is
+        # called a virtual manifest: https://doc.rust-lang.org/cargo/reference/
+        # manifest.html#virtual-manifest
+        def virtual_manifest?(file)
+          !file.content.include?("[package]")
+        end
+
         def version_class
           Cargo::Version
         end
@@ -422,4 +426,3 @@ module Dependabot
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

@@ -35,6 +35,8 @@
 # - terraform
 # - cocoapods
 
+# rubocop:disable Style/GlobalVars
+
 $LOAD_PATH << "./bundler/lib"
 $LOAD_PATH << "./cargo/lib"
 $LOAD_PATH << "./common/lib"
@@ -101,7 +103,7 @@ $options = {
   commit: nil
 }
 
-if ENV["LOCAL_GITHUB_ACCESS_TOKEN"]
+unless ENV["LOCAL_GITHUB_ACCESS_TOKEN"].to_s.strip.empty?
   $options[:credentials] << {
     "type" => "git_source",
     "host" => "github.com",
@@ -110,9 +112,10 @@ if ENV["LOCAL_GITHUB_ACCESS_TOKEN"]
   }
 end
 
-if ENV["LOCAL_CONFIG_VARIABLES"]
+unless ENV["LOCAL_CONFIG_VARIABLES"].to_s.strip.empty?
   # For example:
-  # "[{\"type\":\"npm_registry\",\"registry\":\"registry.npmjs.org\",\"token\":\"123\"}]"
+  # "[{\"type\":\"npm_registry\",\"registry\":\
+  #     "registry.npmjs.org\",\"token\":\"123\"}]"
   $options[:credentials].concat(JSON.parse(ENV["LOCAL_CONFIG_VARIABLES"]))
 end
 
@@ -135,17 +138,17 @@ option_parse = OptionParser.new do |opts|
     $options[:cache_steps].concat(value.split(",").map(&:strip))
   end
 
-  opts.on("--write", "Write the update to the cache directory") do |value|
+  opts.on("--write", "Write the update to the cache directory") do |_value|
     $options[:write] = true
   end
 
-  opts.on("--lockfile-only", "Only update the lockfile") do |value|
-    $options[:lockfile_only] = value
+  opts.on("--lockfile-only", "Only update the lockfile") do |_value|
+    $options[:lockfile_only] = true
   end
 
-  opts_req_description = "Options: auto, widen_ranges, bump_versions or "\
+  opts_req_desc = "Options: auto, widen_ranges, bump_versions or "\
                          "bump_versions_if_necessary"
-  opts.on("--requirements-update-strategy STRATEGY", opts_req_description) do |value|
+  opts.on("--requirements-update-strategy STRATEGY", opts_req_desc) do |value|
     value = nil if value == "auto"
     $options[:requirements_update_strategy] = value
   end
@@ -195,7 +198,10 @@ def cached_read(name)
   cache_dir = File.dirname(cache_path)
   FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
   cached = File.read(cache_path) if File.exist?(cache_path)
+  # rubocop:disable Security/MarshalLoad
   return Marshal.load(cached) if cached
+
+  # rubocop:enable Security/MarshalLoad
 
   data = yield
   File.write(cache_path, Marshal.dump(data))
@@ -208,15 +214,23 @@ def dependency_files_cache_dir
   File.join("dry-run", $repo_name.split("/"), branch, dir)
 end
 
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
 def cached_dependency_files_read
   cache_dir = dependency_files_cache_dir
-  cache_manifest_path = File.join(cache_dir, "cache-manifest-#{$package_manager}.json")
+  cache_manifest_path = File.join(
+    cache_dir, "cache-manifest-#{$package_manager}.json"
+  )
   FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
 
-  cached_manifest = File.read(cache_manifest_path) if File.exist?(cache_manifest_path)
+  if File.exist?(cache_manifest_path)
+    cached_manifest = File.read(cache_manifest_path)
+  end
   cached_dependency_files = JSON.parse(cached_manifest) if cached_manifest
 
-  all_files_cached = cached_dependency_files && cached_dependency_files.all? do |file|
+  all_files_cached = cached_dependency_files&.all? do |file|
     File.exist?(File.join(cache_dir, file["name"]))
   end
 
@@ -269,6 +283,10 @@ def cached_dependency_files_read
     data
   end
 end
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/AbcSize
 
 source = Dependabot::Source.new(
   provider: "github",
@@ -280,7 +298,7 @@ source = Dependabot::Source.new(
 
 $files = cached_dependency_files_read do
   fetcher = Dependabot::FileFetchers.for_package_manager($package_manager).
-    new(source: source, credentials: $options[:credentials])
+            new(source: source, credentials: $options[:credentials])
   fetcher.files
 end
 
@@ -306,7 +324,39 @@ def update_checker_for(dependency)
     dependency_files: $files,
     credentials: $options[:credentials],
     requirements_update_strategy: $options[:requirements_update_strategy],
+    ignored_versions: ignore_conditions_for(dependency),
+    security_advisories: security_advisories_for(dependency)
   )
+end
+
+# TODO: Parse from config file
+def ignore_conditions_for(_)
+  # Array of version requirements, e.g. ["4.x", "5.x"]
+  []
+end
+
+# TODO: Parse from config file
+def security_advisories_for(dependency)
+  # Array of version requirement ranges, e.g. affected_versions: ["< 3.5.1"]
+  advisories = [{
+    dependency_name: dependency.name,
+    patched_versions: [],
+    unaffected_versions: [],
+    affected_versions: []
+  }]
+
+  advisories.map do |adv|
+    vulnerable_versions = adv[:affected_versions] || []
+    safe_versions = (adv[:patched_versions] || []) +
+                    (adv[:unaffected_versions] || [])
+
+    Dependabot::SecurityAdvisory.new(
+      dependency_name: dependency.name,
+      package_manager: $package_manager,
+      vulnerable_versions: vulnerable_versions,
+      safe_versions: safe_versions
+    )
+  end
 end
 
 def peer_dependencies_can_update?(checker, reqs_to_unlock)
@@ -317,7 +367,7 @@ def peer_dependencies_can_update?(checker, reqs_to_unlock)
         name: dep.name,
         version: dep.previous_version,
         requirements: dep.previous_requirements,
-        package_manager: dep.package_manager,
+        package_manager: dep.package_manager
       )
       update_checker_for(original_peer_dep).
         can_update?(requirements_to_unlock: :own)
@@ -349,6 +399,7 @@ end
 
 puts "=> updating #{dependencies.count} dependencies"
 
+# rubocop:disable Metrics/BlockLength
 dependencies.each do |dep|
   puts "\n=== #{dep.name} (#{dep.version})"
   checker = update_checker_for(dep)
@@ -375,7 +426,8 @@ dependencies.each do |dep|
   puts " => requirements to unlock: #{requirements_to_unlock}"
 
   if checker.respond_to?(:requirements_update_strategy)
-    puts " => requirements update strategy: #{checker.requirements_update_strategy}"
+    puts " => requirements update strategy: "\
+         "#{checker.requirements_update_strategy}"
   end
 
   if requirements_to_unlock == :update_not_possible
@@ -393,8 +445,9 @@ dependencies.each do |dep|
   end
 
   updated_files = generate_dependency_files_for(updated_deps)
+
   # Currently unused but used to create pull requests (from the updater)
-  updated_deps = updated_deps.reject do |d|
+  updated_deps.reject do |d|
     next false if d.name == checker.dependency.name
     next true if d.requirements == d.previous_requirements
 
@@ -414,3 +467,6 @@ dependencies.each do |dep|
     show_diff(original_file, updated_file)
   end
 end
+# rubocop:enable Metrics/BlockLength
+
+# rubocop:enable Style/GlobalVars

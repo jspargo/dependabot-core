@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "dependabot/file_updaters"
 require "dependabot/file_updaters/base"
 
 module Dependabot
@@ -75,5 +74,3 @@ module Dependabot
   end
 end
 
-Dependabot::FileUpdaters.
-    register("cocoapods", Dependabot::CocoaPods::FileUpdater)

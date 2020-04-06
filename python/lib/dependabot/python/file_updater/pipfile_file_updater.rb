@@ -13,7 +13,6 @@ require "dependabot/python/name_normaliser"
 module Dependabot
   module Python
     class FileUpdater
-      # rubocop:disable Metrics/ClassLength
       class PipfileFileUpdater
         require_relative "pipfile_preparer"
         require_relative "pipfile_manifest_updater"
@@ -281,7 +280,7 @@ module Dependabot
           run_command("pyenv local #{python_version}")
           run_command("pyenv exec pipenv --rm")
 
-          @python_version = "2.7.16"
+          @python_version = "2.7.17"
           retry
         ensure
           @python_version = nil
@@ -461,7 +460,6 @@ module Dependabot
           }
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end
