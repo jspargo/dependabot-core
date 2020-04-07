@@ -84,7 +84,7 @@ module Dependabot
               parsed_lockfile,
               nil,
               true,
-              {:pods => [dependency.name]}
+              { pods: [dependency.name] }
             )
 
             analyzer.installation_options.integrate_targets = false
@@ -147,4 +147,4 @@ module Dependabot
 end
 
 Dependabot::UpdateCheckers.
-    register("cocoapods", Dependabot::CocoaPods::UpdateChecker)
+  register("cocoapods", Dependabot::CocoaPods::UpdateChecker)

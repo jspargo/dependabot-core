@@ -13,4 +13,4 @@ module Dependabot
 end
 
 Dependabot::Utils.
-    register_requirement_class("cocoapods", Dependabot::CocoaPods::Requirement)
+  register_requirement_class("cocoapods", Dependabot::CocoaPods::Requirement)

@@ -76,4 +76,4 @@ module Dependabot
 end
 
 Dependabot::FileUpdaters.
-    register("cocoapods", Dependabot::CocoaPods::FileUpdater)
+  register("cocoapods", Dependabot::CocoaPods::FileUpdater)
