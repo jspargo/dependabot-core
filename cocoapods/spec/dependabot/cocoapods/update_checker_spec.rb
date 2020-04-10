@@ -10,6 +10,8 @@ require_common_spec "update_checkers/shared_examples_for_update_checkers"
 RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   it_behaves_like "an update checker"
 
+  COCOAPODS_CDN_HOST = "https://cdn.cocoapods.org"
+
   before do
     master_url = "https://api.github.com/repos/CocoaPods/Specs/commits/master"
     stub_request(:get, master_url).to_return(status: 304)
@@ -77,13 +79,59 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   let(:cocoapods_all_pods) do
-    fixture("cocoapods", "all_pods.txt")
+    fixture("cocoapods", "all_pods", "all_pods.txt")
   end
 
   before do
     all_pods_url = "https://cdn.cocoapods.org/all_pods.txt"
     stub_request(:get, all_pods_url).
       to_return(status: 200, body: cocoapods_all_pods)
+
+    deprecated_specs_url = "#{COCOAPODS_CDN_HOST}/deprecated_podspecs.txt"
+    stub_request(:get, deprecated_specs_url).
+      to_return(status: 200, body: cocoapods_deprecated_specs)
+
+    cocoapods_version_url = "#{COCOAPODS_CDN_HOST}/CocoaPods-version.yml"
+    stub_request(:get, cocoapods_version_url).
+      to_return(status: 200, body: cocoapods_version_yaml)
+
+    github_version_url = "https://github.com/dependabot/Specs.git/CocoaPods-version.yml"
+    stub_request(:get, github_version_url).
+      to_return(status: 200, body: cocoapods_version_yaml)
+
+    stub_all_pods_versions_requests
+    stub_all_spec_requests
+  end
+
+  def stub_all_pods_versions_requests
+    Dir[File.join("spec", "fixtures", "cocoapods", "all_pods", "all_pods_versions_*.txt")].each do |file|
+      versions_url = "https://cdn.cocoapods.org/#{File.basename(file)}"
+      stub_request(:get, versions_url).
+        to_return(status: 200, body: File.read(file))
+    end
+  end
+
+  def stub_all_spec_requests
+    spec_paths = {
+      "Nimble": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
+      "Alamofire": "Specs/d/a/2/Alamofire/5.1.0/Alamofire.podspec.json",
+      "AlamofireImage": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
+    }
+
+    Dir[File.join("spec", "fixtures", "cocoapods", "specs", "*.podspec.json")].each do |file|
+      spec = File.basename(file, ".podspec.json")
+      spec_path = spec_paths[spec.to_sym]
+      versions_url = "https://cdn.cocoapods.org/#{spec_path}"
+
+      puts "Version url: #{versions_url}"
+
+      stub_request(:get, versions_url).
+        to_return(status: 200, body: File.read(file))
+    end
+  end
+
+  before do
+    stub_cocoapods_cdn_requests
   end
 
   describe "#latest_version" do
