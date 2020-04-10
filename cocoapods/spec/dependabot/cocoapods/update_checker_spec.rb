@@ -129,7 +129,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
     Dir[File.join("spec", "fixtures", "cocoapods", "specs", "*.podspec.json")].each do |file|
       spec = File.basename(file, ".podspec.json")
       spec_path = spec_paths[spec.to_sym]
-      versions_url = "https://cdn.cocoapods.org/#{spec_path}"
+      versions_url = "#{COCOAPODS_CDN_HOST}/#{spec_path}"
 
       stub_request(:get, versions_url).
         to_return(status: 200, body: File.read(file))
