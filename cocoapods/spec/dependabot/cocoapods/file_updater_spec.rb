@@ -15,14 +15,14 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
   end
 
   before do
-    all_pods_body = fixture("cocoapods", "all_pods.txt")
+    all_pods_body = fixture("cocoapods", "all_pods", "all_pods.txt")
     all_pods_url = "https://cdn.cocoapods.org/all_pods.txt"
     stub_request(:get, all_pods_url).
       to_return(status: 200, body: all_pods_body)
   end
 
   before do
-    all_pods_versions_body = fixture("cocoapods", "all_pods_versions_d_a_2.txt")
+    all_pods_versions_body = fixture("cocoapods", "all_pods", "all_pods_versions_d_a_2.txt")
     all_pods_versions_url = "https://cdn.cocoapods.org/all_pods_versions_d_a_2.txt"
     stub_request(:get, all_pods_versions_url).
       to_return(status: 200, body: all_pods_versions_body)
