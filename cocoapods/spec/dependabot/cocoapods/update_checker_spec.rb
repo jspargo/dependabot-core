@@ -81,7 +81,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   before do
-    all_pods_url = "https://cdn.cocoapods.org//all_pods.txt"
+    all_pods_url = "https://cdn.cocoapods.org/all_pods.txt"
     stub_request(:get, all_pods_url).
       to_return(status: 200, body: cocoapods_all_pods)
   end
