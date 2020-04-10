@@ -83,7 +83,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   let(:cocoapods_deprecated_specs) do
-    fixture("cocoapods", "specs", "deprecated_podspecs.txt")
+    fixture("cocoapods", "podspecs", "deprecated_podspecs.txt")
   end
 
   let(:cocoapods_version_yaml) do
@@ -112,7 +112,8 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   def stub_all_pods_versions_requests
-    Dir[File.join("spec", "fixtures", "cocoapods", "all_pods", "all_pods_versions_*.txt")].each do |file|
+    all_versions_files = File.join("spec", "fixtures", "cocoapods", "all_pods", "all_pods_versions_*.txt")
+    Dir[all_versions_files].each do |file|
       versions_url = "#{COCOAPODS_CDN_HOST}/#{File.basename(file)}"
       stub_request(:get, versions_url).
         to_return(status: 200, body: File.read(file))
@@ -121,12 +122,12 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
 
   def stub_all_spec_requests
     spec_paths = {
-      "Nimble": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
-      "Alamofire": "Specs/d/a/2/Alamofire/5.1.0/Alamofire.podspec.json",
-      "AlamofireImage": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
+      "Nimble-0.0.1": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
+      "Alamofire-5.1.0": "Specs/d/a/2/Alamofire/5.1.0/Alamofire.podspec.json",
+      "AlamofireImage-4.1.0": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
     }
 
-    Dir[File.join("spec", "fixtures", "cocoapods", "specs", "*.podspec.json")].each do |file|
+    Dir[File.join("spec", "fixtures", "cocoapods", "podspecs", "*.podspec.json")].each do |file|
       spec = File.basename(file, ".podspec.json")
       spec_path = spec_paths[spec.to_sym]
       versions_url = "#{COCOAPODS_CDN_HOST}/#{spec_path}"
