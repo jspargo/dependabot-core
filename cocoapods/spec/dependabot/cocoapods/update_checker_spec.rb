@@ -82,7 +82,15 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
     fixture("cocoapods", "all_pods", "all_pods.txt")
   end
 
-  before do
+  let(:cocoapods_deprecated_specs) do
+    fixture("cocoapods", "specs", "deprecated_podspecs.txt")
+  end
+
+  let(:cocoapods_version_yaml) do
+    fixture("cocoapods", "CocoaPods-Version.yml")
+  end
+
+  def stub_cocoapods_cdn_requests
     all_pods_url = "https://cdn.cocoapods.org/all_pods.txt"
     stub_request(:get, all_pods_url).
       to_return(status: 200, body: cocoapods_all_pods)
@@ -122,8 +130,6 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
       spec = File.basename(file, ".podspec.json")
       spec_path = spec_paths[spec.to_sym]
       versions_url = "https://cdn.cocoapods.org/#{spec_path}"
-
-      puts "Version url: #{versions_url}"
 
       stub_request(:get, versions_url).
         to_return(status: 200, body: File.read(file))
