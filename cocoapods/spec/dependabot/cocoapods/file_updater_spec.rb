@@ -9,6 +9,8 @@ require_common_spec "file_updaters/shared_examples_for_file_updaters"
 RSpec.describe Dependabot::CocoaPods::FileUpdater do
   it_behaves_like "a dependency file updater"
 
+  COCOAPODS_CDN_HOST = "https://cdn.cocoapods.org"
+
   let(:cocoapods_all_pods) do
     fixture("cocoapods", "all_pods", "all_pods.txt")
   end
