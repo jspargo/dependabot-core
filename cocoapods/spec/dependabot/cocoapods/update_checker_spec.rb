@@ -90,27 +90,6 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
     fixture("cocoapods", "CocoaPods-Version.yml")
   end
 
-  def stub_cocoapods_cdn_requests
-    all_pods_url = "#{COCOAPODS_CDN_HOST}/all_pods.txt"
-    stub_request(:get, all_pods_url).
-      to_return(status: 200, body: cocoapods_all_pods)
-
-    deprecated_specs_url = "#{COCOAPODS_CDN_HOST}/deprecated_podspecs.txt"
-    stub_request(:get, deprecated_specs_url).
-      to_return(status: 200, body: cocoapods_deprecated_specs)
-
-    cocoapods_version_url = "#{COCOAPODS_CDN_HOST}/CocoaPods-version.yml"
-    stub_request(:get, cocoapods_version_url).
-      to_return(status: 200, body: cocoapods_version_yaml)
-
-    github_version_url = "https://github.com/dependabot/Specs.git/CocoaPods-version.yml"
-    stub_request(:get, github_version_url).
-      to_return(status: 200, body: cocoapods_version_yaml)
-
-    stub_all_pods_versions_requests
-    stub_all_spec_requests
-  end
-
   def stub_all_pods_versions_requests
     all_versions_files = File.join("spec", "fixtures", "cocoapods", "all_pods", "all_pods_versions_*.txt")
     Dir[all_versions_files].each do |file|
@@ -123,7 +102,11 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   def stub_all_spec_requests
     spec_paths = {
       "Nimble-0.0.1": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
-      "Alamofire-5.1.0": "Specs/d/a/2/Alamofire/5.1.0/Alamofire.podspec.json",
+      "Alamofire-3.0.1": "Specs/d/a/2/Alamofire/3.0.1/Alamofire.podspec.json",
+      "Alamofire-3.5.1": "Specs/d/a/2/Alamofire/3.5.1/Alamofire.podspec.json",
+      "Alamofire-4.5.0": "Specs/d/a/2/Alamofire/4.5.0/Alamofire.podspec.json",
+      "Alamofire-4.5.1": "Specs/d/a/2/Alamofire/4.5.1/Alamofire.podspec.json",
+      "Alamofire-4.6.0": "Specs/d/a/2/Alamofire/4.6.0/Alamofire.podspec.json",
       "AlamofireImage-4.1.0": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
     }
 
@@ -138,7 +121,24 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   before do
-    stub_cocoapods_cdn_requests
+    all_pods_url = "#{COCOAPODS_CDN_HOST}/all_pods.txt"
+    stub_request(:get, all_pods_url).
+        to_return(status: 200, body: cocoapods_all_pods)
+
+    deprecated_specs_url = "#{COCOAPODS_CDN_HOST}/deprecated_podspecs.txt"
+    stub_request(:get, deprecated_specs_url).
+        to_return(status: 200, body: cocoapods_deprecated_specs)
+
+    cocoapods_version_url = "#{COCOAPODS_CDN_HOST}/CocoaPods-version.yml"
+    stub_request(:get, cocoapods_version_url).
+        to_return(status: 200, body: cocoapods_version_yaml)
+
+    github_version_url = "https://github.com/dependabot/Specs.git/CocoaPods-version.yml"
+    stub_request(:get, github_version_url).
+        to_return(status: 200, body: cocoapods_version_yaml)
+
+    stub_all_pods_versions_requests
+    stub_all_spec_requests
   end
 
   describe "#latest_version" do
