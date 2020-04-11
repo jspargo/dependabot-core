@@ -107,6 +107,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
       "Alamofire-4.5.0": "Specs/d/a/2/Alamofire/4.5.0/Alamofire.podspec.json",
       "Alamofire-4.5.1": "Specs/d/a/2/Alamofire/4.5.1/Alamofire.podspec.json",
       "Alamofire-4.6.0": "Specs/d/a/2/Alamofire/4.6.0/Alamofire.podspec.json",
+      "AlamofireImage-2.5.0": "Specs/8/0/a/AlamofireImage/2.5.0/AlamofireImage.podspec.json",
       "AlamofireImage-4.1.0": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
     }
 
@@ -154,9 +155,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
     subject { checker.latest_resolvable_version }
 
     context "for a dependency from the master source" do
-      # Stubbing the CocoaPods spec repo is hard. Instead just spec that the
-      # latest version is high
-      it { is_expected.to be >= Pod::Version.new("4.4.0") }
+      it { is_expected.to eq(Pod::Version.new("3.0.1")) }
 
       context "with a version conflict at the latest version" do
         let(:podfile_content) do
@@ -191,7 +190,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
         fixture("cocoapods", "lockfiles", "private_source")
       end
 
-      it { is_expected.to eq(Pod::Version.new("4.3.0")) }
+      it { is_expected.to eq(Pod::Version.new("4.6.0")) }
     end
 
     context "for a dependency with a specified source repo (inline)" do
@@ -208,7 +207,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
         fixture("cocoapods", "lockfiles", "inline_source")
       end
 
-      it { is_expected.to eq(Pod::Version.new("4.3.0")) }
+      it { is_expected.to eq(Pod::Version.new("4.6.0")) }
     end
   end
 

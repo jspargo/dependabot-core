@@ -1,1 +1,1 @@
-AlamofireImage/4.1.0
+AlamofireImage/2.5.0/4.1.0

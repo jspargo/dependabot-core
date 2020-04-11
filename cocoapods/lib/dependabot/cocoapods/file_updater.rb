@@ -12,8 +12,9 @@ module Dependabot
       POD_NAME = /[a-zA-Z0-9\-_\.]+/.freeze
       QUOTED_POD_NAME = /(?:(?<gq>["'])(?<name>#{POD_NAME})
         \k<gq>|%q<(?<name>#{POD_NAME})>)/.freeze
+      POD_VERSION = /(\d+\.)?(\d+\.)?(\*|\d+)/.freeze
       MATCHER = /(?:=|!=|>|<|>=|<=|~>)/.freeze
-      REQUIREMENT = /[ \t]*(?:#{MATCHER}[ \t]*)?#{VERSION}[ \t]*/.freeze
+      REQUIREMENT = /[ \t]*(?:#{MATCHER}[ \t]*)?#{POD_VERSION}[ \t]*/.freeze
       REQUIREMENT_LIST = /(?<qr1>["'])(?<req1>#{REQUIREMENT})
         \k<qr1>(?:[ \t]*,[ \t]*(?<qr2>["'])(?<req2>#{REQUIREMENT})
         \k<qr2>)?/.freeze

@@ -38,6 +38,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         "Alamofire-4.5.0": "Specs/d/a/2/Alamofire/4.5.0/Alamofire.podspec.json",
         "Alamofire-4.5.1": "Specs/d/a/2/Alamofire/4.5.1/Alamofire.podspec.json",
         "Alamofire-4.6.0": "Specs/d/a/2/Alamofire/4.6.0/Alamofire.podspec.json",
+        "AlamofireImage-2.5.0": "Specs/8/0/a/AlamofireImage/2.5.0/AlamofireImage.podspec.json",
         "AlamofireImage-4.1.0": "Specs/8/0/a/AlamofireImage/4.1.0/AlamofireImage.podspec.json"
     }
 
