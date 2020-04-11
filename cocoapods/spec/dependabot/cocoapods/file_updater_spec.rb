@@ -65,10 +65,6 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
     stub_request(:get, cocoapods_version_url).
         to_return(status: 200, body: cocoapods_version_yaml)
 
-    github_version_url = "https://github.com/dependabot/Specs.git/CocoaPods-version.yml"
-    stub_request(:get, github_version_url).
-        to_return(status: 200, body: cocoapods_version_yaml)
-
     stub_all_pods_versions_requests
     stub_all_spec_requests
   end
