@@ -46,6 +46,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
   def stub_all_spec_requests
     spec_paths = {
       "Nimble-0.0.1": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
+      "Nimble-3.0.0": "Specs/d/c/d/Nimble/3.0.0/Nimble.podspec.json",
       "Alamofire-3.0.1": "Specs/d/a/2/Alamofire/3.0.1/Alamofire.podspec.json",
       "Alamofire-3.5.1": "Specs/d/a/2/Alamofire/3.5.1/Alamofire.podspec.json",
       "Alamofire-4.5.0": "Specs/d/a/2/Alamofire/4.5.0/Alamofire.podspec.json",
@@ -117,10 +118,10 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
   let(:dependency) do
     Dependabot::Dependency.new(
       name: "Alamofire",
-      version: "4.0.0",
+      version: "4.5.0",
       previous_version: "3.0.0",
       requirements: [{
-        requirement: "~> 4.0.0",
+        requirement: "~> 4.5.0",
         file: "Podfile",
         source: nil,
         groups: []
@@ -153,7 +154,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         let(:podfile_body) do
           fixture("cocoapods", "podfiles", "version_specified")
         end
-        its(:content) { is_expected.to include "'Alamofire', '~> 4.0.0'" }
+        its(:content) { is_expected.to include "'Alamofire', '~> 4.5.0'" }
         its(:content) { is_expected.to include "'Nimble', '~> 2.0.0'" }
       end
 
@@ -175,7 +176,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         end
 
         it "locks the updated pod to the latest version" do
-          expect(file.content).to include "Alamofire (4.0.1)"
+          expect(file.content).to include "Alamofire (4.5.1)"
         end
 
         it "doesn't change the version of the other (also outdated) pod" do
@@ -195,26 +196,39 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         end
 
         it "locks the updated pod to the latest version" do
-          expect(file.content).to include "Alamofire (4.3.0)"
+          expect(file.content).to include "Alamofire (4.6.0)"
         end
       end
 
       context "with a git source for one of the other dependencies" do
         let(:podfile_body) { fixture("cocoapods", "podfiles", "git_source") }
 
+        before do
+          local_podspecs_path = File.join("tmp", "Local Podspecs")
+          FileUtils.mkdir_p(local_podspecs_path)
+
+          spec_fixtures_dir = File.join(fixtures_path, "podspecs")
+          alamofire_podspec = File.join(
+            spec_fixtures_dir,
+            "Alamofire-4.6.0.podspec.json"
+          )
+          FileUtils.cp(alamofire_podspec,
+                       File.join(local_podspecs_path, "Alamofire.podspec.json"))
+        end
+
         let(:dependency) do
           Dependabot::Dependency.new(
             name: "Nimble",
-            version: "6.0.0",
-            previous_version: "3.0.0",
+            version: "3.0.0",
+            previous_version: "2.0.0",
             requirements: [{
-              requirement: "~> 6.0.0",
+              requirement: "~> 3.0.0",
               file: "Podfile",
               source: nil,
               groups: []
             }],
             previous_requirements: [{
-              requirement: "~> 3.0.0",
+              requirement: "~> 2.0.0",
               file: "Podfile",
               source: nil,
               groups: []
@@ -224,7 +238,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         end
 
         it "locks the updated pod to the latest version" do
-          expect(file.content).to include "Nimble (6.0.1)"
+          expect(file.content).to include "Nimble (3.0.0)"
         end
 
         it "leaves the other (git referencing) pod alone" do
@@ -234,7 +248,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
 
         it "generates the correct podfile checksum" do
           expect(file.content).
-            to include "CHECKSUM: 2db781eacbb9b29370b899ba5cd95a2347a63bd4"
+            to include "CHECKSUM: 2df7e373e023da06ffbeb508011feff582312fc6"
         end
 
         it "doesn't leave details of the access token in the lockfile" do
