@@ -87,7 +87,7 @@ RSpec.describe Dependabot::CocoaPods::UpdateChecker do
   end
 
   let(:cocoapods_version_yaml) do
-    fixture("cocoapods", "CocoaPods-Version.yml")
+    fixture("cocoapods", "CocoaPods-version.yml")
   end
 
   let(:fixtures_path) do

@@ -20,7 +20,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
   end
 
   let(:cocoapods_version_yaml) do
-    fixture("cocoapods", "CocoaPods-Version.yml")
+    fixture("cocoapods", "CocoaPods-version.yml")
   end
 
   let(:fixtures_path) do
