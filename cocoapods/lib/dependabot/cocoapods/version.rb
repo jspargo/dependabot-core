@@ -15,7 +15,6 @@ module Dependabot
       end
 
       def self.correct?(version)
-        puts(version)
         super(Pod::Version.new(version))
       end
     end
