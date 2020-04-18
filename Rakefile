@@ -50,7 +50,7 @@ namespace :ci do
     packages = changed_packages
     puts "Running rspec on: #{packages.join(', ')}"
     packages.each do |package|
-      run_command("cd #{package} && bundle exec rspec spec -f d")
+      run_command("cd #{package} && bundle exec rspec spec")
     end
   end
 end
