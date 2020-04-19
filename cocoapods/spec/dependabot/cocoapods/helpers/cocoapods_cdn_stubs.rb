@@ -15,6 +15,10 @@ def stub_all_cocoapods_cdn_requests
   stub_request(:get, cocoapods_version_url).
     to_return(status: 200, body: COCOAPODS_VERSION_YAML)
 
+  cocoapods_version_url2 = "#{COCOAPODS_CDN_HOST}//CocoaPods-version.yml"
+  stub_request(:get, cocoapods_version_url2).
+    to_return(status: 200, body: COCOAPODS_VERSION_YAML)
+
   stub_all_pods_versions_requests
   stub_all_spec_requests
 end
