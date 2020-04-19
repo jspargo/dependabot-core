@@ -45,7 +45,7 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
 
   def stub_all_spec_requests
     spec_paths = {
-      "Nimble-0.0.1": "Specs/d/c/d/Nimble/0.0.1/Nimble.podspec.json",
+      "Nimble-2.0.0": "Specs/d/c/d/Nimble/2.0.0/Nimble.podspec.json",
       "Nimble-3.0.0": "Specs/d/c/d/Nimble/3.0.0/Nimble.podspec.json",
       "Alamofire-3.0.1": "Specs/d/a/2/Alamofire/3.0.1/Alamofire.podspec.json",
       "Alamofire-3.5.1": "Specs/d/a/2/Alamofire/3.5.1/Alamofire.podspec.json",
