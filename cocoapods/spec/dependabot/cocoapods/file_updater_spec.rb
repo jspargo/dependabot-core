@@ -10,6 +10,10 @@ require_common_spec "file_updaters/shared_examples_for_file_updaters"
 RSpec.describe Dependabot::CocoaPods::FileUpdater do
   it_behaves_like "a dependency file updater"
 
+  let(:fixtures_path) do
+    File.join("spec", "fixtures", "cocoapods")
+  end
+
   before do
     stub_all_cocoapods_cdn_requests
   end
