@@ -9,7 +9,7 @@ module Dependabot
       require_relative "file_updater/podfile_updater"
       require_relative "file_updater/lockfile_updater"
 
-      WORD = /[a-zA-Z0-9\-_\.\/]+/.freeze
+      WORD = %r{[a-zA-Z0-9\-_\./]+}.freeze
       POD_NAME = /(('|")(?<q_name>#{WORD})('|")|(?<name>#{WORD}))/.freeze
 
       POD_VERSION = /((\d+)\.(\d+)\.(\*|\d+))/.freeze
