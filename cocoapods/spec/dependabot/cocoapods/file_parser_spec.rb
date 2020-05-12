@@ -144,6 +144,38 @@ RSpec.describe Dependabot::CocoaPods::FileParser do
       end
     end
 
+    context "for a dependency with a git source and branch specified" do
+      let(:podfile_body) do
+        fixture("cocoapods", "podfiles", "git_source_branch")
+      end
+      let(:lockfile_body) do
+        fixture("cocoapods", "lockfiles", "git_source_branch")
+      end
+
+      its(:length) { is_expected.to eq(2) }
+
+      describe "the first dependency" do
+        subject { dependencies.first }
+        let(:expected_requirements) do
+          [{
+            requirement: ">= 0",
+            file: "Podfile",
+            groups: [],
+            source: {
+              type: "git",
+              url: "https://github.com/Alamofire/Alamofire.git",
+              branch: "hotfix",
+              ref: nil
+            }
+          }]
+        end
+
+        it { is_expected.to be_a(Dependabot::Dependency) }
+        its(:name) { is_expected.to eq("Alamofire") }
+        its(:requirements) { is_expected.to eq(expected_requirements) }
+      end
+    end
+
     context "with development dependencies" do
       let(:podfile_body) do
         fixture("cocoapods", "podfiles", "development_dependencies")
