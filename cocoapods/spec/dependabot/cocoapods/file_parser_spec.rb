@@ -95,7 +95,7 @@ RSpec.describe Dependabot::CocoaPods::FileParser do
         subject { dependencies.last }
         it { is_expected.to be_a(Dependabot::Dependency) }
         its(:name) { is_expected.to eq("Alamofire") }
-        its(:version) { is_expected.to eq("3.5.0") }
+        its(:version) { is_expected.to eq("3.5.1") }
         its(:requirements) { is_expected.to eq([]) }
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe Dependabot::CocoaPods::FileParser do
         fixture("cocoapods", "lockfiles", "version_specified")
       end
 
-      its(:length) { is_expected.to eq(1) }
+      its(:length) { is_expected.to eq(2) }
     end
 
     context "for a dependency with a git source" do

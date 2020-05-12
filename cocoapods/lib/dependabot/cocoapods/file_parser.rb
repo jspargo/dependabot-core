@@ -52,7 +52,7 @@ module Dependabot
           dependencies <<
             Dependency.new(
               name: dep,
-              version: parsed_lockfile.version(dep),
+              version: parsed_lockfile.version(dep)&.to_s,
               requirements: [],
               package_manager: "cocoapods"
             )
