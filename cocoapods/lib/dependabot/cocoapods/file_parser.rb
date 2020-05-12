@@ -72,12 +72,13 @@ module Dependabot
 
       def dependency_requirements(dependency)
         return unless dependency.external_source
+
         type_key, type_value = dependency.external_source.first
         {
-          :branch => dependency.external_source[:branch],
-          :ref => dependency.external_source[:tag],
-          :type => type_key.to_s,
-          :url => type_value
+          branch: dependency.external_source[:branch],
+          ref: dependency.external_source[:tag],
+          type: type_key.to_s,
+          url: type_value
         }
       end
 
