@@ -34,7 +34,7 @@ module Dependabot
               requirements: [{
                 requirement: dep.requirement.to_s,
                 groups: [],
-                source: nil, # TODO: Identify git dependencies
+                source: dependency_requirements(dep),
                 file: podfile.name
               }],
               package_manager: "cocoapods"
@@ -68,6 +68,17 @@ module Dependabot
 
       def dependency_version(dependency_name)
         Pod::Version.new(parsed_lockfile.version(dependency_name))
+      end
+
+      def dependency_requirements(dependency)
+        return unless dependency.external_source
+        type_key, type_value = dependency.external_source.first
+        {
+          :branch => dependency.external_source[:branch],
+          :ref => dependency.external_source[:tag],
+          :type => type_key.to_s,
+          :url => type_value
+        }
       end
 
       def podfile
