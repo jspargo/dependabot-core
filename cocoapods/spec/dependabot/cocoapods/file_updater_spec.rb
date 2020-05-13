@@ -100,6 +100,14 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
       end
     end
 
+    context "when the full version of a pod is specified but others aren't" do
+      let(:podfile_body) do
+        fixture("cocoapods", "podfiles", "version_both_specified_and_not")
+      end
+      its(:content) { is_expected.to include "'Alamofire', '~> 4.5.0'" }
+      its(:content) { is_expected.to include "'Nimble'\n" }
+    end
+
     describe "the updated lockfile" do
       subject(:file) { updated_files.find { |f| f.name == "Podfile.lock" } }
 
