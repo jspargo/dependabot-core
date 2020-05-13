@@ -98,6 +98,14 @@ RSpec.describe Dependabot::CocoaPods::FileUpdater do
         its(:content) { is_expected.to include "'Alamofire'\n" }
         its(:content) { is_expected.to include "'Nimble'\n" }
       end
+
+      context "when the full version of a pod is specified but others aren't" do
+        let(:podfile_body) do
+          fixture("cocoapods", "podfiles", "version_both_specified_and_not")
+        end
+        its(:content) { is_expected.to include "'Alamofire'\n" }
+        its(:content) { is_expected.to include "'Nimble', '~> 2.0.0'" }
+      end
     end
 
     describe "the updated lockfile" do
